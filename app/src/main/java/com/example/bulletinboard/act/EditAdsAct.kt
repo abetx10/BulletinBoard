@@ -25,6 +25,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     private var dialog = DialogSpinnerHelper()
     private lateinit var imageAdapter: ImageAdapter
     private var chooseImageFrag: ImageListFrag? = null
+    var editImagepos = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,12 +42,19 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             if (data != null) {
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 if (returnValues?.size!! > 1 && chooseImageFrag == null) {
-                    openChoseImageFrahment(returnValues)
+                    openChoseImageFragment(returnValues)
                 } else if (chooseImageFrag != null) {
                     chooseImageFrag?.updateAdapter(returnValues)
 
                 }
             }
+
+        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES) {
+            if (data != null) {
+                val uris = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                chooseImageFrag?.setSingleImage(uris?.get(0)!!, editImagepos, )
+            }
+
         }
     }
 
@@ -61,7 +69,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ImagePicker.getImages(this, 3)
+                    ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
                 } else {
                     Toast.makeText(
                         this,
@@ -105,9 +113,9 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View) {
         if(imageAdapter.mainArray.size == 0 ){
-            ImagePicker.getImages(this, 3)
+            ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
         } else {
-            openChoseImageFrahment(imageAdapter.mainArray)
+            openChoseImageFragment(imageAdapter.mainArray)
 
         }
 
@@ -124,7 +132,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         chooseImageFrag = null
     }
 
-    private fun openChoseImageFrahment(newList: ArrayList<String>) {
+    private fun openChoseImageFragment(newList: ArrayList<String>) {
         chooseImageFrag = ImageListFrag(this, newList)
         binding.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
