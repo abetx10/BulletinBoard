@@ -13,7 +13,6 @@ import com.example.bulletinboard.databinding.ActivityEditAdsBinding
 import com.example.bulletinboard.dialogs.DialogSpinnerHelper
 import com.example.bulletinboard.frag.FragmentCloseInterface
 import com.example.bulletinboard.frag.ImageListFrag
-import com.example.bulletinboard.frag.SelectImageItem
 import com.example.bulletinboard.utils.CityHelper
 import com.example.bulletinboard.utils.ImagePicker
 import com.fxn.pix.Pix
@@ -42,11 +41,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             if (data != null) {
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 if (returnValues?.size!! > 1 && chooseImageFrag == null) {
-                    chooseImageFrag = ImageListFrag(this, returnValues)
-                    binding.scrollViewMain.visibility = View.GONE
-                    val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, chooseImageFrag!!)
-                    fm.commit()
+                    openChoseImageFrahment(returnValues)
                 } else if (chooseImageFrag != null) {
                     chooseImageFrag?.updateAdapter(returnValues)
 
@@ -109,7 +104,13 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View) {
-        ImagePicker.getImages(this, 3)
+        if(imageAdapter.mainArray.size == 0 ){
+            ImagePicker.getImages(this, 3)
+        } else {
+            openChoseImageFrahment(imageAdapter.mainArray)
+
+        }
+
 //        val fm = supportFragmentManager.beginTransaction()
 //        fm.replace(R.id.place_holder, ImageListFrag(this))
 //        fm.commit()
@@ -117,10 +118,18 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     }
 
-    override fun onFragClose(list: ArrayList<SelectImageItem>) {
+    override fun onFragClose(list: ArrayList<String>) {
         binding.scrollViewMain.visibility = View.VISIBLE
         imageAdapter.updateAdapter(list)
         chooseImageFrag = null
+    }
+
+    private fun openChoseImageFrahment(newList: ArrayList<String>) {
+        chooseImageFrag = ImageListFrag(this, newList)
+        binding.scrollViewMain.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, chooseImageFrag!!)
+        fm.commit()
     }
 
 }
