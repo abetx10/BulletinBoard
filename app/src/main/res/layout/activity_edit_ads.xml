@@ -47,7 +47,7 @@
                     android:onClick="onClickGetImages"
                     app:layout_constraintEnd_toEndOf="@+id/vpImages"
                     app:layout_constraintTop_toTopOf="@+id/vpImages"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
+                    app:srcCompat="@drawable/ic_edit" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
