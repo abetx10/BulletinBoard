@@ -3,7 +3,9 @@ package com.example.bulletinboard.act
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +16,7 @@ import com.example.bulletinboard.dialogs.DialogSpinnerHelper
 import com.example.bulletinboard.frag.FragmentCloseInterface
 import com.example.bulletinboard.frag.ImageListFrag
 import com.example.bulletinboard.utils.CityHelper
+import com.example.bulletinboard.utils.ImageManager
 import com.example.bulletinboard.utils.ImagePicker
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
@@ -44,7 +47,9 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 if (returnValues?.size!! > 1 && chooseImageFrag == null) {
                     openChoseImageFragment(returnValues)
                 } else if (returnValues.size == 1 && chooseImageFrag == null) {
-                    imageAdapter.updateAdapter(returnValues)
+                    //imageAdapter.updateAdapter(returnValues)
+                    val tempList = ImageManager.getImageSize(returnValues[0])
+                    Log.d("MyLog", "width ${tempList[0]}")
 
                 } else if (chooseImageFrag != null) {
                     chooseImageFrag?.updateAdapter(returnValues)
@@ -118,7 +123,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         if(imageAdapter.mainArray.size == 0 ){
             ImagePicker.getImages(this, 3, ImagePicker.REQUEST_CODE_GET_IMAGES)
         } else {
-            openChoseImageFragment(imageAdapter.mainArray)
+            openChoseImageFragment(null)
+            chooseImageFrag?.updateAdapterFromEdit(imageAdapter.mainArray)
 
         }
 
@@ -129,13 +135,13 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     }
 
-    override fun onFragClose(list: ArrayList<String>) {
+    override fun onFragClose(list: ArrayList<Bitmap>) {
         binding.scrollViewMain.visibility = View.VISIBLE
         imageAdapter.updateAdapter(list)
         chooseImageFrag = null
     }
 
-    private fun openChoseImageFragment(newList: ArrayList<String>) {
+    private fun openChoseImageFragment(newList: ArrayList<String>?) {
         chooseImageFrag = ImageListFrag(this, newList)
         binding.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()

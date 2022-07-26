@@ -1,6 +1,6 @@
 package com.example.bulletinboard.frag
 
-import android.net.Uri
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,7 @@ import com.example.bulletinboard.utils.ItemTouchMoveCallback
 
 class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
 
-   val mainArray = ArrayList<String>()
+   val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_frag_item, parent, false)
@@ -48,14 +48,14 @@ class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolde
         lateinit var imEditImage : ImageButton
         lateinit var imDeleteImage : ImageButton
 
-        fun setData(item : String){
+        fun setData(bitMap : Bitmap){
             tvTitle = itemView.findViewById(R.id.tvTitle)
             image = itemView.findViewById(R.id.imageContent)
             imEditImage = itemView.findViewById(R.id.imEditImage)
             imDeleteImage = itemView.findViewById(R.id.imDelete)
 
             tvTitle.text = context.resources.getStringArray(R.array.title_array)[adapterPosition]
-            image.setImageURI(Uri.parse(item))
+            image.setImageBitmap(bitMap)
 
             imEditImage.setOnClickListener{
                 ImagePicker.getImages(context as EditAdsAct, 1, ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES)
@@ -73,7 +73,7 @@ class SelectImageRvAdapter: RecyclerView.Adapter<SelectImageRvAdapter.ImageHolde
     }
 
 
-    fun updateAdapter(newList : List<String>, needClear : Boolean){
+    fun updateAdapter(newList : List<Bitmap>, needClear : Boolean){
         if(needClear)mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
