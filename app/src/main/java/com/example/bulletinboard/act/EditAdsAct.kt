@@ -24,10 +24,10 @@ import com.fxn.utility.PermUtil
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
-    private lateinit var binding: ActivityEditAdsBinding
-    private var dialog = DialogSpinnerHelper()
-    private lateinit var imageAdapter: ImageAdapter
-    private var chooseImageFrag: ImageListFrag? = null
+    lateinit var binding: ActivityEditAdsBinding
+    var dialog = DialogSpinnerHelper()
+    lateinit var imageAdapter: ImageAdapter
+    var chooseImageFrag: ImageListFrag? = null
     var editImagepos = 0
 
 
@@ -40,30 +40,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        ImagePicker.showSelectedImages(resultCode, requestCode, data, this)
 
-        if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_IMAGES) {
-            if (data != null) {
-                val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                if (returnValues?.size!! > 1 && chooseImageFrag == null) {
-                    openChoseImageFragment(returnValues)
-                } else if (returnValues.size == 1 && chooseImageFrag == null) {
-                    //imageAdapter.updateAdapter(returnValues)
-                    val tempList = ImageManager.getImageSize(returnValues[0])
-                    Log.d("MyLog", "width ${tempList[0]}")
-
-                } else if (chooseImageFrag != null) {
-                    chooseImageFrag?.updateAdapter(returnValues)
-
-                }
-            }
-
-        } else if (resultCode == RESULT_OK && requestCode == ImagePicker.REQUEST_CODE_GET_SINGLE_IMAGES) {
-            if (data != null) {
-                val uris = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                chooseImageFrag?.setSingleImage(uris?.get(0)!!, editImagepos, )
-            }
-
-        }
     }
 
     @SuppressLint("MissingSuperCall")
@@ -141,7 +119,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         chooseImageFrag = null
     }
 
-    private fun openChoseImageFragment(newList: ArrayList<String>?) {
+    fun openChoseImageFragment(newList: ArrayList<String>?) {
         chooseImageFrag = ImageListFrag(this, newList)
         binding.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()

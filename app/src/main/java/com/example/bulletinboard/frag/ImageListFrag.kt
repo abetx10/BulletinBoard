@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -37,6 +38,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
     val dragCallBack = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallBack)
     private var job : Job? = null
+    private var addImageItem: MenuItem? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +79,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
             val bitmapList = ImageManager.imageResize(newList)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
+            if (adapter.mainArray.size > 2) addImageItem?.isVisible = false
         }
 
     }
@@ -84,7 +87,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
     private fun setUpToolBar(){
         binding.tb.inflateMenu(R.menu.menu_chose_image)
         val deleteItem = binding.tb.menu.findItem(R.id.id_delete_image)
-        val addImageItem = binding.tb.menu.findItem(R.id.id_add_image)
+        addImageItem = binding.tb.menu.findItem(R.id.id_add_image)
 
         binding.tb.setNavigationOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
@@ -97,7 +100,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
         }
 
 
-        addImageItem.setOnMenuItemClickListener {
+        addImageItem?.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
             ImagePicker.getImages(activity as AppCompatActivity, imageCount, ImagePicker.REQUEST_CODE_GET_IMAGES)
             true

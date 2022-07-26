@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple_light">#ED85FF</color>
     <color name="red">#F44336</color>
+    <color name="peach">#FFFDBBA6</color>
+    <color name="peach_ligth">#FCEBE6</color>
+    <color name="peach_extra_ligth">#FDF7F5</color>
 </resources>
