@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.R
 import com.example.bulletinboard.databinding.ListImageFragBinding
 import com.example.bulletinboard.dialoghelper.ProgressDialog
+import com.example.bulletinboard.utils.AdapterCallback
 import com.example.bulletinboard.utils.ImageManager
 import com.example.bulletinboard.utils.ImagePicker
 import com.example.bulletinboard.utils.ItemTouchMoveCallback
@@ -31,10 +32,10 @@ import kotlinx.coroutines.launch
 
 
 
-class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  val newList : ArrayList<String>?) : Fragment(){
+class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  val newList : ArrayList<String>?) : Fragment(), AdapterCallback{
 
     lateinit var binding : ListImageFragBinding
-    val adapter = SelectImageRvAdapter()
+    val adapter = SelectImageRvAdapter(this)
     val dragCallBack = ItemTouchMoveCallback(adapter)
     val touchHelper = ItemTouchHelper(dragCallBack)
     private var job : Job? = null
@@ -58,6 +59,11 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
         if (newList != null) {
             resizeSelectedImage(newList, true)
         }
+
+    }
+
+    override fun onItemDelete() {
+        addImageItem?.isVisible = true
 
     }
 
@@ -96,6 +102,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
 
         deleteItem.setOnMenuItemClickListener {
             adapter.updateAdapter(ArrayList(), true)
+            addImageItem?.isVisible = true
             true
         }
 
@@ -125,4 +132,6 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
 
 
     }
+
+
 }
