@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.example.bulletinboard.act.EditAdsAct
+import com.example.bulletinboard.database.DbManager
 import com.example.bulletinboard.databinding.ActivityMainBinding
 import com.example.bulletinboard.dialoghelper.DialogConst
 import com.example.bulletinboard.dialoghelper.DialogHelper
@@ -29,12 +30,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
+    val dbManager = DbManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        dbManager.readDataFromDb()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
