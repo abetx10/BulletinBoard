@@ -5,7 +5,7 @@
     android:id="@+id/place_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="onClickGetImages"
+    android:onClick="onClickPublish"
     tools:context=".act.EditAdsAct">
 
     <ScrollView
@@ -168,8 +168,8 @@
                         android:layout_height="wrap_content"
                         android:background="@android:drawable/editbox_background"
                         android:ems="10"
-                        android:hint="@string/description"
                         android:gravity="center"
+                        android:hint="@string/description"
                         android:inputType="textMultiLine"
                         android:minHeight="48dp"
                         android:textSize="16sp" />
@@ -182,6 +182,7 @@
                 android:layout_height="wrap_content"
                 android:height="48dp"
                 android:backgroundTint="@color/peach"
+                android:onClick="onClickPublish"
                 android:text="@string/publish"
                 android:textColor="@color/white" />
 

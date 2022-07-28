@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bulletinboard.R
 import com.example.bulletinboard.adapters.ImageAdapter
+import com.example.bulletinboard.data.Ad
+import com.example.bulletinboard.database.DbManager
 import com.example.bulletinboard.databinding.ActivityEditAdsBinding
 import com.example.bulletinboard.dialogs.DialogSpinnerHelper
 import com.example.bulletinboard.frag.FragmentCloseInterface
@@ -29,6 +31,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var imageAdapter: ImageAdapter
     var chooseImageFrag: ImageListFrag? = null
     var editImagepos = 0
+    val dbManager = DbManager()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -119,6 +122,28 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
 
     }
+
+    fun onClickPublish(view: View){
+        dbManager.publishAd(fillAd())
+    }
+
+    private fun fillAd() : Ad {
+        binding.apply {
+            val ad = Ad(tvCountry.text.toString(),
+                tvCity.text.toString(),
+                tel.text.toString(),
+                tvCategory.text.toString(),
+                edPrice.text.toString(),
+                edDescription.text.toString(),
+                dbManager.db.push().key
+            )
+            return ad
+
+        }
+
+    }
+
+
 
     override fun onFragClose(list: ArrayList<Bitmap>) {
         binding.scrollViewMain.visibility = View.VISIBLE
