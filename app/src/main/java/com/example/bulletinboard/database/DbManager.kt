@@ -18,12 +18,12 @@ class DbManager {
     }
 
     fun readDataFromDb(){
+         val adArray = ArrayList<Ad>()
         db.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in snapshot.children){
                     val ad = item.children.iterator().next().child("ad").getValue(Ad ::class.java)
-
-                Log.d("MyLog", "Data: ${ad?.country}")
+                    if (ad != null) adArray.add(ad)
                 }
             }
 
