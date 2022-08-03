@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -23,18 +23,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="0dp"
-            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
                 android:height="24dp"
+                android:background="#FFC3C3"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="3dp"
                 android:text="TextView"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,14 +47,15 @@
 
             <ImageView
                 android:id="@+id/mainImage"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
+                android:background="@color/peach_extra_light"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                tools:srcCompat="@drawable/ic_def_image" />
 
             <TextView
                 android:id="@+id/tvDescription"
@@ -58,6 +64,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
+                android:fontFamily="sans-serif-condensed"
                 android:gravity="center_horizontal"
                 android:text="TextView"
                 android:textColor="@color/black"
@@ -70,6 +77,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
+                android:fontFamily="sans-serif-condensed"
                 android:gravity="center_horizontal"
                 android:text="TextView"
                 android:textColor="@color/black"
@@ -102,13 +110,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="TextView" />
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="500" />
 
                     <ImageButton
                         android:id="@+id/ibLikes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="0"
                         android:background="@android:color/transparent"
                         app:srcCompat="@drawable/ic_views_counter" />
@@ -119,7 +128,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_weight="0"
-                        android:text="TextView" />
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="1200" />
 
                 </LinearLayout>
 

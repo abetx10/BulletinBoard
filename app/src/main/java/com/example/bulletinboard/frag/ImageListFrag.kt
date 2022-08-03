@@ -4,21 +4,17 @@ package com.example.bulletinboard.frag
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.R
+import com.example.bulletinboard.act.EditAdsAct
 import com.example.bulletinboard.databinding.ListImageFragBinding
 import com.example.bulletinboard.dialoghelper.ProgressDialog
 import com.example.bulletinboard.utils.AdapterCallback
@@ -109,7 +105,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
 
         addImageItem?.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getImages(activity as AppCompatActivity, imageCount, ImagePicker.REQUEST_CODE_GET_IMAGES)
+            ImagePicker.launcher(activity as EditAdsAct, (activity as EditAdsAct).launcherMultiSelectImage, imageCount)
             true
         }
 

@@ -5,6 +5,7 @@ data class Ad(
     val city: String? = null,
     val phone: String? = null,
     val category: String? = null,
+    val title: String? = null,
     val price: String? = null,
     val description: String? = null,
     val key: String? = null

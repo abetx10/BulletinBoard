@@ -10,8 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bulletinboard.act.EditAdsAct
+import com.example.bulletinboard.adapters.AdsRcAdapter
+import com.example.bulletinboard.data.Ad
 import com.example.bulletinboard.database.DbManager
+import com.example.bulletinboard.database.ReadDataCallback
 import com.example.bulletinboard.databinding.ActivityMainBinding
 import com.example.bulletinboard.dialoghelper.DialogConst
 import com.example.bulletinboard.dialoghelper.DialogHelper
@@ -24,19 +28,21 @@ import com.google.firebase.auth.FirebaseUser
 import java.lang.Exception
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ReadDataCallback {
 
     private lateinit var tvAccount: TextView
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = FirebaseAuth.getInstance()
-    val dbManager = DbManager()
+    val dbManager = DbManager(this)
+    val adapter = AdsRcAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        initRecyclerView()
         dbManager.readDataFromDb()
     }
 
@@ -92,6 +98,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         tvAccount = binding.navView.getHeaderView(0).findViewById(R.id.tvAccountEmail)
     }
 
+
+    private fun initRecyclerView(){
+        binding.apply {
+            mainContent.rcView.layoutManager = LinearLayoutManager(this@MainActivity)
+            mainContent.rcView.adapter = adapter
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.id_my_ads -> {
@@ -133,6 +147,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
 
+    }
+
+    override fun readData(list: List<Ad>) {
+        adapter.updateAdapter(list)
     }
 
 }

@@ -35,6 +35,7 @@
     <string name="tel">*Номер телефона</string>
     <string name="category">*Выберите категорию</string>
     <string name="price">Цена</string>
+    <string name="title">*Заголовок</string>
     <string name="description">Описание</string>
     <string name="publish">Опубликовать</string>
 

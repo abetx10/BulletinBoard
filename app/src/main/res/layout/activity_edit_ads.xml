@@ -12,7 +12,7 @@
         android:id="@+id/scrollViewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/peach_ligth"
+        android:background="@color/peach_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,6 +148,18 @@
                         android:padding="10dp"
                         android:text="@string/category"
                         android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/editbox_background"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="@string/title"
+                        android:inputType="text"
+                        android:minHeight="48dp"
                         android:textSize="16sp" />
 
                     <EditText
