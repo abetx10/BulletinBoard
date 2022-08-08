@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/bigtr/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/drawable/button_nav_selector.xml" value="0.297" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/drawable/ic_add_iamge.xml" value="0.244" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/drawable/ic_baseline_fiber_new_24.xml" value="0.2335" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.226" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/layout/sign_dialog.xml" value="0.25" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/layout/sp_list_item.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/layout/spinner_layout.xml" value="0.25" />
+        <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/menu/bottom_main_menu.xml" value="0.33" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/menu/drawer_main_menu.xml" value="0.5" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/menu/main_menu.xml" value="0.22708333333333333" />
         <entry key="..\:/Users/bigtr/IdeaProjects/ShoppingList/BulletinBoard/app/src/main/res/menu/menu_chose_image.xml" value="0.23802083333333332" />

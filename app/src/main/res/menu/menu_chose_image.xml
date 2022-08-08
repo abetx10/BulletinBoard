@@ -11,7 +11,7 @@
 
     <item android:title="Add"
         android:id="@+id/id_add_image"
-        android:icon="@drawable/ic_add_iamge"
+        android:icon="@drawable/ic_add_image"
         app:showAsAction="ifRoom"/>
 
     <item android:title=""
