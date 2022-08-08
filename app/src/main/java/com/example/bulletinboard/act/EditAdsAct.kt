@@ -10,8 +10,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bulletinboard.R
 import com.example.bulletinboard.adapters.ImageAdapter
-import com.example.bulletinboard.data.Ad
-import com.example.bulletinboard.database.DbManager
+import com.example.bulletinboard.model.Ad
+import com.example.bulletinboard.model.DbManager
 import com.example.bulletinboard.databinding.ActivityEditAdsBinding
 import com.example.bulletinboard.dialogs.DialogSpinnerHelper
 import com.example.bulletinboard.frag.FragmentCloseInterface
@@ -28,7 +28,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var imageAdapter: ImageAdapter
     var chooseImageFrag: ImageListFrag? = null
     var editImagepos = 0
-    val dbManager = DbManager(null)
+    val dbManager = DbManager()
     var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
     var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
 
