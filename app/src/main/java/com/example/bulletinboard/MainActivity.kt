@@ -18,6 +18,7 @@ import com.example.bulletinboard.databinding.ActivityMainBinding
 import com.example.bulletinboard.dialoghelper.DialogConst
 import com.example.bulletinboard.dialoghelper.DialogHelper
 import com.example.bulletinboard.dialoghelper.GoogleAccConst
+import com.example.bulletinboard.model.Ad
 import com.example.bulletinboard.viewmodel.FirebaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -28,7 +29,7 @@ import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.DeleteItemListener {
 
     private lateinit var tvAccount: TextView
     lateinit var binding: ActivityMainBinding
@@ -182,6 +183,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     companion object {
         const val EDIT_STATE = "edit_state"
         const val ADS_DATA = "ads_data"
+    }
+
+    override fun onDeleteItem(ad: Ad) {
+        firebaseViewModel.deleteItem(ad)
     }
 
 

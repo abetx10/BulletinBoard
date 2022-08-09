@@ -31,6 +31,13 @@ class DbManager {
         readDataFromDb(query, readDataCallback)
     }
 
+    fun deleteAdd(ad: Ad, listener: FinishWorkListener) {
+        if (ad.key == null || ad.uid == null) return
+        db.child(ad.key).child(ad.uid).removeValue().addOnCompleteListener {
+            if (it.isSuccessful) listener.onFinish()
+        }
+    }
+
 
     private fun readDataFromDb(query: Query, readDataCallback: ReadDataCallback?) {
         val adArray = ArrayList<Ad>()
