@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var binding: ActivityMainBinding
     private val dialogHelper = DialogHelper(this)
     val mAuth = Firebase.auth
-    val adapter = AdsRcAdapter(mAuth)
+    val adapter = AdsRcAdapter(this)
     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,14 +56,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -88,7 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         uiUpdate(mAuth.currentUser)
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         firebaseViewModel.liveAdsData.observe(this, {
             adapter.updateAdapter(it)
         })
@@ -109,23 +105,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         tvAccount = binding.navView.getHeaderView(0).findViewById(R.id.tvAccountEmail)
     }
 
-    private fun bottomMenuOnClick() = with(binding){
+    private fun bottomMenuOnClick() = with(binding) {
         mainContent.bNavView.setOnItemSelectedListener { item ->
-            when(item.itemId){
+            when (item.itemId) {
                 R.id.id_new_ad -> {
                     val i = Intent(this@MainActivity, EditAdsAct::class.java)
                     startActivity(i)
                 }
-                R.id.id_my_add -> {Toast.makeText(this@MainActivity, "My ads", Toast.LENGTH_LONG).show()}
-                R.id.id_favs -> {Toast.makeText(this@MainActivity, "favs", Toast.LENGTH_LONG).show()}
-                R.id.id_home -> {Toast.makeText(this@MainActivity, "home", Toast.LENGTH_LONG).show()}
+                R.id.id_my_add -> {
+                    firebaseViewModel.loadMyAds()
+                    mainContent.toolbar.title = getString(R.string.app_my_ads)
+                }
+                R.id.id_favs -> {
+                    Toast.makeText(this@MainActivity, "favs", Toast.LENGTH_LONG).show()
+                }
+                R.id.id_home -> {
+                    firebaseViewModel.loadAllAds()
+                    mainContent.toolbar.title = getString(R.string.app_def)
+                }
             }
             true
         }
     }
 
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         binding.apply {
             mainContent.rcView.layoutManager = LinearLayoutManager(this@MainActivity)
             mainContent.rcView.adapter = adapter
@@ -173,6 +177,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
 
+    }
+
+    companion object {
+        const val EDIT_STATE = "edit_state"
+        const val ADS_DATA = "ads_data"
     }
 
 

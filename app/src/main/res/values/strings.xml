@@ -2,11 +2,13 @@
     <string name="app_name">BulletinBoard</string>
     <!-- Menu Drawer Strings -->
     <string name="ad_cat1">Обьявления</string>
-    <string name="app_my_ads">Мои Обьявления</string>
+    <string name="app_my_ads">Мои обьявления</string>
     <string name="app_car">Машины</string>
     <string name="app_pc">Компьютеры</string>
     <string name="app_smartphone">Смартфоны</string>
     <string name="app_dm">Бытовая Техника</string>
+    <string name="app_fav">Избранные</string>
+    <string name="app_def">Разное</string>
     <string name="ad_cat2">Аккаунт</string>
     <string name="ac_sigh_up">Регистрация</string>
     <string name="ac_sigh_in">Вход</string>

@@ -1,5 +1,7 @@
 package com.example.bulletinboard.model
 
+import java.io.Serializable
+
 data class Ad(
     val country: String? = null,
     val city: String? = null,
@@ -10,4 +12,4 @@ data class Ad(
     val description: String? = null,
     val key: String? = null,
     val uid: String? = null
-)
+) : Serializable

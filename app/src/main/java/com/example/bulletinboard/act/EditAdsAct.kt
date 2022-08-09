@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bulletinboard.MainActivity
 import com.example.bulletinboard.R
 import com.example.bulletinboard.adapters.ImageAdapter
 import com.example.bulletinboard.model.Ad
@@ -38,6 +39,29 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         binding = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        checkEditState()
+    }
+
+    private fun checkEditState(){
+        if(isEditState()){
+            fillViews(intent.getSerializableExtra(MainActivity.ADS_DATA) as Ad)
+        }
+    }
+
+
+    private fun isEditState():Boolean{
+        return intent.getBooleanExtra(MainActivity.EDIT_STATE, false)
+    }
+
+    private fun fillViews(ad: Ad) = with(binding){
+        tvCountry.text = ad.country
+        tvCity.text = ad.city
+        tel.setText(ad.phone)
+        tvCategory.text = ad.category
+        edTitle.setText(ad.title)
+        edPrice.setText(ad.price)
+        edDescription.setText(ad.description)
+
     }
 
 
