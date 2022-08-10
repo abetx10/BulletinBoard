@@ -29,7 +29,7 @@ import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.DeleteItemListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.Listener {
 
     private lateinit var tvAccount: TextView
     lateinit var binding: ActivityMainBinding
@@ -187,6 +187,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onDeleteItem(ad: Ad) {
         firebaseViewModel.deleteItem(ad)
+    }
+
+    override fun onAdViewed(ad: Ad) {
+        firebaseViewModel.adViewed(ad)
     }
 
 

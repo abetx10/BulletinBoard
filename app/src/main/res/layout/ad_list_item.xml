@@ -98,7 +98,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/imViewCounter"
+                        android:id="@+id/ibLikes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
@@ -107,15 +107,15 @@
                         app:srcCompat="@drawable/ic_like" />
 
                     <TextView
-                        android:id="@+id/tvCounter"
+                        android:id="@+id/tvLikes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:fontFamily="sans-serif-condensed"
-                        android:text="500" />
+                        android:text="0" />
 
                     <ImageButton
-                        android:id="@+id/ibLikes"
+                        android:id="@+id/imViewCounter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -124,13 +124,13 @@
                         app:srcCompat="@drawable/ic_views_counter" />
 
                     <TextView
-                        android:id="@+id/tvLikes"
+                        android:id="@+id/tvViewCounter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:layout_weight="0"
                         android:fontFamily="sans-serif-condensed"
-                        android:text="1200" />
+                        android:text="0" />
 
                 </LinearLayout>
 
