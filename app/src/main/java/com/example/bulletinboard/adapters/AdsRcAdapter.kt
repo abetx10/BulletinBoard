@@ -47,6 +47,7 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
             tvPrice.text = ad.price
             tvTitle.text = ad.title
             tvViewCounter.text = ad.viewsCounter
+            tvLikes.text = ad.favCounter
             if(ad.isFav) {
                 ibLikes.setImageResource(R.drawable.ic_like_added)
             } else {
