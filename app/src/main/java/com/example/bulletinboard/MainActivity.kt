@@ -118,7 +118,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     mainContent.toolbar.title = getString(R.string.app_my_ads)
                 }
                 R.id.id_favs -> {
-                    Toast.makeText(this@MainActivity, "favs", Toast.LENGTH_LONG).show()
+                    firebaseViewModel.loadMyFavs()
+                    mainContent.toolbar.title = getString(R.string.app_fav)
+
                 }
                 R.id.id_home -> {
                     firebaseViewModel.loadAllAds()
