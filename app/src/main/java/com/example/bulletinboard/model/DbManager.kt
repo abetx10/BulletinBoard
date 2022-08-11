@@ -34,6 +34,36 @@ class DbManager {
         readDataFromDb(query, readDataCallback)
     }
 
+    fun onFavClick(ad: Ad, listener: FinishWorkListener){
+        if(ad.isFav){
+            removeFromFavs(ad, listener)
+        } else {
+            addToFavs(ad, listener)
+        }
+    }
+
+    fun addToFavs(ad: Ad, listener: FinishWorkListener) {
+        ad.key?.let {
+            auth.uid?.let {
+                    uid -> db.child(it).child(FAVS_NODE).child(uid)
+                .setValue(uid).addOnCompleteListener {
+                    if (it.isSuccessful) listener.onFinish()
+                }
+            }
+        }
+    }
+
+    private fun removeFromFavs(ad: Ad, listener: FinishWorkListener) {
+        ad.key?.let {
+            auth.uid?.let {
+                    uid -> db.child(it).child(FAVS_NODE).child(uid)
+                .removeValue().addOnCompleteListener {
+                    if (it.isSuccessful) listener.onFinish()
+                }
+            }
+        }
+    }
+
     fun getAllAds(readDataCallback: ReadDataCallback?) {
         val query = db.orderByChild(auth.uid + "/ad/price")
         readDataFromDb(query, readDataCallback)
@@ -85,6 +115,7 @@ class DbManager {
         const val AD_NODE = "ad"
         const val MAIN_NODE = "main"
         const val INFO_NODE = "info"
+        const val FAVS_NODE = "favs"
     }
 
 }
