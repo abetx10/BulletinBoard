@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -86,9 +87,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun initViewModel() {
-        firebaseViewModel.liveAdsData.observe(this, {
+        firebaseViewModel.liveAdsData.observe(this) {
             adapter.updateAdapter(it)
-        })
+            binding.mainContent.tvEmpty.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+        }
     }
 
     private fun init() {
