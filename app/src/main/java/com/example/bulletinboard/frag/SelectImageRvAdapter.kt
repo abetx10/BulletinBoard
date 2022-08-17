@@ -3,9 +3,6 @@ package com.example.bulletinboard.frag
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.R
 import com.example.bulletinboard.act.EditAdsAct
@@ -53,7 +50,7 @@ class SelectImageRvAdapter(val adapterCallback : AdapterCallback): RecyclerView.
 
 
             viewBinding.imEditImage.setOnClickListener{
-                ImagePicker.launcher(context as EditAdsAct,  1)
+                ImagePicker.getSingleImage(context as EditAdsAct)
                 context.editImagepos = adapterPosition
             }
 

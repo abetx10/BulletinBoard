@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.bulletinboard.R
 import com.example.bulletinboard.act.EditAdsAct
 import io.ak1.pix.helpers.PixEventCallback
@@ -35,7 +36,7 @@ object ImagePicker {
     }
 
 
-    fun launcher(edAct: EditAdsAct, imageCounter: Int) {
+    fun getMultiImages(edAct: EditAdsAct, imageCounter: Int) {
         edAct.addPixToActivity(R.id.place_holder, getOptions(imageCounter)) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
@@ -48,7 +49,27 @@ object ImagePicker {
         }
 
     }
-}
+
+    fun getSingleImage(edAct: EditAdsAct,) {
+        val f = edAct.chooseImageFrag
+        edAct.addPixToActivity(R.id.place_holder, getOptions(1)) { result ->
+            when (result.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    edAct.chooseImageFrag = f
+                    openChooseImageFrag(edAct, f!!)
+                    getSingleImage(edAct, result.data[0])
+                }
+                else -> {}
+            }
+
+        }
+
+    }
+
+    private fun openChooseImageFrag(edAct: EditAdsAct, f:Fragment){
+        edAct.supportFragmentManager.beginTransaction().replace(R.id.place_holder, f).commit()
+    }
+
 
 
     private fun closePixFrag(edAct: EditAdsAct) {
@@ -80,18 +101,16 @@ object ImagePicker {
 
     }
 
-    fun getLauncherForSingleImage(edAct: EditAdsAct): ActivityResultLauncher<Intent> {
-        return edAct.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                result: ActivityResult ->
-            /*if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                if (result.data != null) {
-                    val uris = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                    edAct.chooseImageFrag?.setSingleImage(uris?.get(0)!!, edAct.editImagepos)
-                }
-
-            }*/
-        }
+    private fun getSingleImage(edAct: EditAdsAct, uri: Uri){
+                    edAct.chooseImageFrag?.setSingleImage(uri, edAct.editImagepos)
     }
+}
+
+
+
+
+
+
 
 
 

@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 
 
 
-class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  val newList : ArrayList<Uri>?) : Fragment(), AdapterCallback{
+class ImageListFrag(val fragCloseInterface : FragmentCloseInterface) : Fragment(), AdapterCallback{
 
     lateinit var binding : ListImageFragBinding
     val adapter = SelectImageRvAdapter(this)
@@ -53,9 +53,6 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
         touchHelper.attachToRecyclerView(binding.rcViewSelectImage)
         binding.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         binding.rcViewSelectImage.adapter = adapter
-        if (newList != null) {
-            resizeSelectedImage(newList, true)
-        }
 
     }
 
@@ -76,10 +73,10 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
 
     }
 
-    private fun resizeSelectedImage(newList: ArrayList<Uri>, needClear : Boolean){
+    fun resizeSelectedImage(newList: ArrayList<Uri>, needClear : Boolean, activity: Activity){
         job = CoroutineScope(Dispatchers.Main).launch {
-            val dialog = ProgressDialog.createProgressDialog(activity as Activity)
-            val bitmapList = ImageManager.imageResize(newList, activity as Activity)
+            val dialog = ProgressDialog.createProgressDialog(activity)
+            val bitmapList = ImageManager.imageResize(newList, activity)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
             if (adapter.mainArray.size > 2) addImageItem?.isVisible = false
@@ -106,14 +103,14 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface, private  va
 
         addImageItem?.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.launcher(activity as EditAdsAct,imageCount)
+            ImagePicker.getMultiImages(activity as EditAdsAct,imageCount)
             true
         }
 
     }
 
     fun updateAdapter(newList: ArrayList<Uri>) {
-        resizeSelectedImage(newList, false)
+        resizeSelectedImage(newList, false, activity as Activity)
 
     }
 

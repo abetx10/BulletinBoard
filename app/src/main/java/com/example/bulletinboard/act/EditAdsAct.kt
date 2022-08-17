@@ -1,13 +1,10 @@
 package com.example.bulletinboard.act
 
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bulletinboard.MainActivity
 import com.example.bulletinboard.R
@@ -105,7 +102,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View) {
         if(imageAdapter.mainArray.size == 0 ){
-            ImagePicker.launcher(this, 3)
+            ImagePicker.getMultiImages(this, 3)
         } else {
             openChoseImageFragment(null)
             chooseImageFrag?.updateAdapterFromEdit(imageAdapter.mainArray)
@@ -166,7 +163,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun openChoseImageFragment(newList: ArrayList<Uri>?) {
-        chooseImageFrag = ImageListFrag(this, newList)
+        chooseImageFrag = ImageListFrag(this)
+        if (newList != null) chooseImageFrag?.resizeSelectedImage(newList, true, this)
         binding.scrollViewMain.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
         fm.replace(R.id.place_holder, chooseImageFrag!!)
