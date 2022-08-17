@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bulletinboard.accounthelper.AccountHelper
 import com.example.bulletinboard.act.EditAdsAct
 import com.example.bulletinboard.adapters.AdsRcAdapter
 import com.example.bulletinboard.databinding.ActivityMainBinding
@@ -165,6 +166,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dialogHelper.createSignDialog(DialogConst.SIGN_UP_STATE)
             }
             R.id.id_sigh_out -> {
+                if(mAuth.currentUser?.isAnonymous == true) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    return true
+                }
                 uiUpdate(null)
                 mAuth.signOut()
                 dialogHelper.accHelper.signOutG()
@@ -175,11 +180,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun uiUpdate(user: FirebaseUser?) {
-        tvAccount.text = if (user == null) {
-            resources.getString(R.string.not_reg)
-        } else {
-            user.email
+        if (user == null) {
+            dialogHelper.accHelper.signInAnonymously(object : AccountHelper.Listener{
+                override fun onComplete() {
+                    tvAccount.text = "Гость"
+                }
+            })
+        } else if (user.isAnonymous){
+            tvAccount.text = "Гость"
 
+        } else if (!user.isAnonymous) {
+            tvAccount.text = user.email
         }
 
     }

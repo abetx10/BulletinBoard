@@ -56,6 +56,7 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
 
             showEditPanel(isOwner(ad))
             ibLikes.setOnClickListener {
+                if(act.mAuth.currentUser?.isAnonymous == false)
                 act.onFavClicked(ad)
 
             }

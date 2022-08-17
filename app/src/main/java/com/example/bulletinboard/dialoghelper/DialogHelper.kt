@@ -8,8 +8,7 @@ import com.example.bulletinboard.R
 import com.example.bulletinboard.accounthelper.AccountHelper
 import com.example.bulletinboard.databinding.SignDialogBinding
 
-class DialogHelper(act: MainActivity) {
-    private val act = act
+class DialogHelper(val act: MainActivity) {
     val accHelper = AccountHelper(act)
     fun createSignDialog(index: Int) {
         val builder = AlertDialog.Builder(act)
