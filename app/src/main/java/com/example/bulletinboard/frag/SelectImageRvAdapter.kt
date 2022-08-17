@@ -53,7 +53,7 @@ class SelectImageRvAdapter(val adapterCallback : AdapterCallback): RecyclerView.
 
 
             viewBinding.imEditImage.setOnClickListener{
-                ImagePicker.launcher(context as EditAdsAct, context.launcherSingleSelectImage, 1)
+                ImagePicker.launcher(context as EditAdsAct,  1)
                 context.editImagepos = adapterPosition
             }
 
