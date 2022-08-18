@@ -12,6 +12,7 @@ import com.example.bulletinboard.act.EditAdsAct
 import com.example.bulletinboard.model.Ad
 import com.example.bulletinboard.databinding.AdListItemBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.AdHolder>() {
     val adArray = ArrayList<Ad>()
@@ -48,16 +49,19 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
             tvTitle.text = ad.title
             tvViewCounter.text = ad.viewsCounter
             tvLikes.text = ad.favCounter
-            if(ad.isFav) {
-                ibLikes.setImageResource(R.drawable.ic_like_added)
-            } else {
-                ibLikes.setImageResource(R.drawable.ic_like)
-            }
+            Picasso.get().load(ad.mainImage).into(mainImage)
 
+
+            isFav(ad)
             showEditPanel(isOwner(ad))
+            mainOnCLick(ad)
+
+        }
+
+        private fun mainOnCLick(ad: Ad) = with(binding){
             ibLikes.setOnClickListener {
                 if(act.mAuth.currentUser?.isAnonymous == false)
-                act.onFavClicked(ad)
+                    act.onFavClicked(ad)
 
             }
             itemView.setOnClickListener {
@@ -68,6 +72,14 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
                 act.onDeleteItem(ad)
             }
 
+        }
+
+        private fun isFav(ad:Ad){
+            if(ad.isFav) {
+                binding.ibLikes.setImageResource(R.drawable.ic_like_added)
+            } else {
+                binding.ibLikes.setImageResource(R.drawable.ic_like)
+            }
         }
 
         private fun onClickEdit(ad: Ad): View.OnClickListener {
