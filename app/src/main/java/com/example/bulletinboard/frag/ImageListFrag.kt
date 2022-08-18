@@ -73,6 +73,14 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface) : Fragment(
 
     }
 
+//    override fun onClose(){
+//        super.on
+//    }
+    
+
+
+    
+
     fun resizeSelectedImage(newList: ArrayList<Uri>, needClear : Boolean, activity: Activity){
         job = CoroutineScope(Dispatchers.Main).launch {
             val dialog = ProgressDialog.createProgressDialog(activity)
