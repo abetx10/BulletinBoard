@@ -88,6 +88,7 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface) : Fragment(
         binding.tb.inflateMenu(R.menu.menu_chose_image)
         val deleteItem = binding.tb.menu.findItem(R.id.id_delete_image)
         addImageItem = binding.tb.menu.findItem(R.id.id_add_image)
+        if (adapter.mainArray.size > 2) addImageItem?.isVisible = false
 
         binding.tb.setNavigationOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
@@ -103,14 +104,14 @@ class ImageListFrag(val fragCloseInterface : FragmentCloseInterface) : Fragment(
 
         addImageItem?.setOnMenuItemClickListener {
             val imageCount = ImagePicker.MAX_IMAGE_COUNT - adapter.mainArray.size
-            ImagePicker.getMultiImages(activity as EditAdsAct,imageCount)
+            ImagePicker.addImages(activity as EditAdsAct,imageCount)
             true
         }
 
     }
 
-    fun updateAdapter(newList: ArrayList<Uri>) {
-        resizeSelectedImage(newList, false, activity as Activity)
+    fun updateAdapter(newList: ArrayList<Uri>, activity: Activity) {
+        resizeSelectedImage(newList, false, activity)
 
     }
 
