@@ -29,6 +29,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var imageAdapter: ImageAdapter
     var chooseImageFrag: ImageListFrag? = null
     val dbManager = DbManager()
+    private var imageIndex = 0
     var editImagepos = 0
     private var isEditState = false
     private var ad : Ad? = null
@@ -119,12 +120,12 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickPublish(view: View) {
-        val adTemp = fillAd()
+        ad = fillAd()
         if (isEditState) {
-            dbManager.publishAd(adTemp.copy(key = ad?.key), onPublishFinish())
+            ad?.copy(key = ad?.key)?.let { dbManager.publishAd(it, onPublishFinish()) }
         } else {
 //            dbManager.publishAd(adTemp, onPublishFinish())
-            uploadImages(adTemp)
+            uploadImages()
         }
         finish()
     }
@@ -175,11 +176,31 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         fm.commit()
     }
 
-    private fun uploadImages(adTemp: Ad){
-       val byteArray =  prepareImageByteArray(imageAdapter.mainArray[0])
-        uploadImage(byteArray){
-            dbManager.publishAd(adTemp.copy(mainImage = it.result.toString()), onPublishFinish())
+    private fun uploadImages(){
+        if (imageAdapter.mainArray.size == imageIndex){
+            dbManager.publishAd(ad!!, onPublishFinish())
+            return
         }
+       val byteArray =  prepareImageByteArray(imageAdapter.mainArray[imageIndex])
+        uploadImage(byteArray){
+            dbManager.publishAd(ad!!, onPublishFinish())
+            nextImage(it.result.toString())
+        }
+    }
+
+    private fun nextImage(uri: String){
+        setImageUriToAd(uri)
+        imageIndex++
+        uploadImages()
+    }
+
+    private fun setImageUriToAd(uri: String){
+        when(imageIndex){
+            0 -> ad = ad?.copy(mainImage = uri)
+            1 -> ad = ad?.copy(image2 = uri)
+            2-> ad = ad?.copy(image3 = uri)
+        }
+
     }
 
     private fun prepareImageByteArray(bitmap: Bitmap): ByteArray{
