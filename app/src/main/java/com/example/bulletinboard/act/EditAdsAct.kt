@@ -17,6 +17,7 @@ import com.example.bulletinboard.dialogs.DialogSpinnerHelper
 import com.example.bulletinboard.frag.FragmentCloseInterface
 import com.example.bulletinboard.frag.ImageListFrag
 import com.example.bulletinboard.utils.CityHelper
+import com.example.bulletinboard.utils.ImageManager
 import com.example.bulletinboard.utils.ImagePicker
 import com.google.android.gms.tasks.OnCompleteListener
 import java.io.ByteArrayOutputStream
@@ -64,6 +65,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         edTitle.setText(ad.title)
         edPrice.setText(ad.price)
         edDescription.setText(ad.description)
+        ImageManager.fillImageArray(ad, imageAdapter)
 
     }
 

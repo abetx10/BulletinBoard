@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.net.toUri
+import androidx.viewpager2.widget.ViewPager2
 import com.example.bulletinboard.adapters.ImageAdapter
 import com.example.bulletinboard.databinding.ActivityDescriptionBinding
 import com.example.bulletinboard.model.Ad
@@ -35,6 +36,7 @@ class DescriptionActivity : AppCompatActivity() {
             viewPager.adapter = adapter
         }
         getIntentFromMainAct()
+        imageChangeCounter()
     }
 
     private fun getIntentFromMainAct(){
@@ -44,7 +46,7 @@ class DescriptionActivity : AppCompatActivity() {
      }
 
     private fun updateUI(ad:Ad){
-        fillImageArray(ad)
+        ImageManager.fillImageArray(ad, adapter)
         fillTextViews(ad)
     }
 
@@ -58,14 +60,6 @@ class DescriptionActivity : AppCompatActivity() {
         tvCity.text = ad.city
 
 
-    }
-
-    private fun fillImageArray(ad: Ad){
-        val listUris = listOf(ad.mainImage, ad.image2, ad.image3)
-        CoroutineScope(Dispatchers.Main).launch {
-            val bitMapList = ImageManager.getBitmapFromUris(listUris)
-            adapter.updateAdapter(bitMapList as ArrayList<Bitmap> /* = java.util.ArrayList<android.graphics.Bitmap> */)
-        }
     }
 
     private fun call(){
@@ -89,5 +83,15 @@ class DescriptionActivity : AppCompatActivity() {
             "У вас нет приложения для отправки эмейлов"
 
         }
+    }
+
+    private fun imageChangeCounter(){
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val imageCounter = "${position + 1}/${binding.viewPager.adapter?.itemCount}"
+                binding.tvImageCounter.text = imageCounter
+            }
+        })
     }
 }
