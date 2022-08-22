@@ -121,6 +121,18 @@
                         android:inputType="phone"
                         android:minHeight="48dp"
                         android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:drawable/editbox_background"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:minHeight="48dp"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
