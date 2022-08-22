@@ -9,6 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val mAuth = Firebase.auth
     val adapter = AdsRcAdapter(this)
     private val firebaseViewModel: FirebaseViewModel by viewModels()
+    lateinit var googleSignInLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,22 +69,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == GoogleAccConst.GOOGLE_SIGN_REQUEST_CODE) {
-            // Log.d("myLog", "Sign in result")
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+    private fun onActivityResult() {
+        googleSignInLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
-                val account = task.getResult(Exception::class.java)
+                val account = task.getResult(ApiException::class.java)
                 if (account != null) {
                     dialogHelper.accHelper.signInFirebaseWithGoogle(account.idToken!!)
                 }
-
             } catch (e: ApiException) {
                 Log.d("MyLog", "Api error: ${e.message}")
             }
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
+
+
+
+
+
 
     override fun onStart() {
         super.onStart()
@@ -97,6 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun init() {
         setSupportActionBar(binding.mainContent.toolbar)
+        onActivityResult()
         val toggle = ActionBarDrawerToggle(
             this,
             binding.drawerLayout,

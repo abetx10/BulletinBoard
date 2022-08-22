@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
 import com.example.bulletinboard.MainActivity
 import com.example.bulletinboard.R
 import com.example.bulletinboard.adapters.ImageAdapter
@@ -42,6 +43,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         setContentView(binding.root)
         init()
         checkEditState()
+        imageChangeCounter()
     }
 
     private fun checkEditState(){
@@ -221,6 +223,16 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         upTask.continueWithTask(){
             task -> imStorageRef.downloadUrl
         }.addOnCompleteListener(listener)
+    }
+
+    private fun imageChangeCounter(){
+        binding.vpImages.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val imageCounter = "${position + 1}/${binding.vpImages.adapter?.itemCount}"
+                binding.tvImageCounter.text = imageCounter
+            }
+        })
     }
 
 }
