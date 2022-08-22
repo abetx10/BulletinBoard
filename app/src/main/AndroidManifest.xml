@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:theme">
         <activity
-            android:name=".DescriptionActivity"
+            android:name=".act.DescriptionActivity"
             android:exported="false" />
         <activity
             android:name=".act.EditAdsAct"

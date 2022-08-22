@@ -71,4 +71,15 @@ object ImageManager {
 
         return@withContext bimapList
     }
+
+    suspend fun getBitmapFromUris(uris: List<String?>) : List<Bitmap> = withContext(Dispatchers.IO){
+        val bimapList = ArrayList<Bitmap>()
+
+        for (i in uris.indices) {
+                bimapList.add(Picasso.get().load(uris[i]).get())
+
+        }
+
+        return@withContext bimapList
+    }
 }

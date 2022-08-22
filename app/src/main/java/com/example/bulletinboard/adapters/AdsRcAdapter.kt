@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.MainActivity
 import com.example.bulletinboard.R
+import com.example.bulletinboard.act.DescriptionActivity
 import com.example.bulletinboard.act.EditAdsAct
 import com.example.bulletinboard.model.Ad
 import com.example.bulletinboard.databinding.AdListItemBinding
@@ -70,6 +71,12 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
             ibEditAd.setOnClickListener(onClickEdit(ad))
             ibDeleteAd.setOnClickListener {
                 act.onDeleteItem(ad)
+            }
+
+            itemView.setOnClickListener {
+                val i = Intent(binding.root.context, DescriptionActivity::class.java)
+                i.putExtra("AD", ad)
+                binding.root.context.startActivity(i)
             }
 
         }
