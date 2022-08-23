@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.accounthelper.AccountHelper
 import com.example.bulletinboard.act.DescriptionActivity
 import com.example.bulletinboard.act.EditAdsAct
@@ -23,7 +24,6 @@ import com.example.bulletinboard.adapters.AdsRcAdapter
 import com.example.bulletinboard.databinding.ActivityMainBinding
 import com.example.bulletinboard.dialoghelper.DialogConst
 import com.example.bulletinboard.dialoghelper.DialogHelper
-import com.example.bulletinboard.dialoghelper.GoogleAccConst
 import com.example.bulletinboard.model.Ad
 import com.example.bulletinboard.viewmodel.FirebaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -33,7 +33,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.Listener {
@@ -54,8 +53,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         init()
         initRecyclerView()
         initViewModel()
-        firebaseViewModel.loadAllAds()
         bottomMenuOnClick()
+        scrollListener()
 
     }
 
@@ -138,7 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 }
                 R.id.id_home -> {
-                    firebaseViewModel.loadAllAds()
+                    firebaseViewModel.loadAllAds("0")
                     mainContent.toolbar.title = getString(R.string.app_def)
                 }
             }
@@ -209,10 +208,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    companion object {
-        const val EDIT_STATE = "edit_state"
-        const val ADS_DATA = "ads_data"
-    }
 
     override fun onDeleteItem(ad: Ad) {
         firebaseViewModel.deleteItem(ad)
@@ -227,6 +222,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onFavClicked(ad: Ad) {
         firebaseViewModel.onFavClick(ad)
+    }
+
+    private fun scrollListener()= with(binding.mainContent){
+        rcView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recView, newState)
+                if (!recView.canScrollVertically(SCROLL_DOWN) && newState == RecyclerView.SCROLL_STATE_IDLE){
+                    val adsList = firebaseViewModel.liveAdsData.value!!
+                    if(adsList.isNotEmpty()) {
+                        adsList[adsList.size - 1]
+                            .let { firebaseViewModel.loadAllAds(it.time) }
+                    }
+                }
+            }
+        })
+    }
+
+    companion object {
+        const val EDIT_STATE = "edit_state"
+        const val ADS_DATA = "ads_data"
+        const val SCROLL_DOWN = 1
+
     }
 
 
