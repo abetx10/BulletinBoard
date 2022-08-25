@@ -36,7 +36,8 @@ import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, AdsRcAdapter.Listener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    AdsRcAdapter.Listener {
 
     private lateinit var tvAccount: TextView
     private lateinit var imAccount: ImageView
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val mAuth = Firebase.auth
     val adapter = AdsRcAdapter(this)
     private val firebaseViewModel: FirebaseViewModel by viewModels()
-    lateinit var googleSignInLauncher : ActivityResultLauncher<Intent>
+    lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
     private var clearUpdate: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +76,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun onActivityResult() {
         googleSignInLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) {
+            ActivityResultContracts.StartActivityForResult()
+        ) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
             try {
                 val account = task.getResult(ApiException::class.java)
@@ -89,10 +91,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-
-
-
     override fun onStart() {
         super.onStart()
         uiUpdate(mAuth.currentUser)
@@ -102,11 +100,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         firebaseViewModel.liveAdsData.observe(this) {
             if (!clearUpdate) {
                 adapter.updateAdapter(it)
-            } else{
+            } else {
                 adapter.updateWithClear(it)
             }
 
-            binding.mainContent.tvEmpty.visibility = if (adapter.itemCount == 0) View.VISIBLE else View.GONE
+            binding.mainContent.tvEmpty.visibility =
+                if (adapter.itemCount == 0) View.VISIBLE else View.GONE
         }
     }
 
@@ -168,16 +167,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "Presed id_my_ads", Toast.LENGTH_LONG).show()
             }
             R.id.id_car -> {
-                Toast.makeText(this, "Presed id_car", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.app_car))
             }
             R.id.id_dm -> {
-                Toast.makeText(this, "Presed id_dm", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.app_dm))
             }
             R.id.id_pc -> {
-                Toast.makeText(this, "Presed id_pc", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.app_pc))
             }
             R.id.id_smart -> {
-                Toast.makeText(this, "Presed id_smart", Toast.LENGTH_LONG).show()
+                getAdsFromCat(getString(R.string.app_smartphone))
             }
             R.id.id_sigh_in -> {
                 dialogHelper.createSignDialog(DialogConst.SIGN_IN_STATE)
@@ -186,7 +185,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dialogHelper.createSignDialog(DialogConst.SIGN_UP_STATE)
             }
             R.id.id_sigh_out -> {
-                if(mAuth.currentUser?.isAnonymous == true) {
+                if (mAuth.currentUser?.isAnonymous == true) {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                     return true
                 }
@@ -199,15 +198,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    private fun getAdsFromCat(cat: String) {
+        val catTime = "${cat}_0"
+        firebaseViewModel.loadAllAdsFromCat(catTime)
+    }
+
     fun uiUpdate(user: FirebaseUser?) {
         if (user == null) {
-            dialogHelper.accHelper.signInAnonymously(object : AccountHelper.Listener{
+            dialogHelper.accHelper.signInAnonymously(object : AccountHelper.Listener {
                 override fun onComplete() {
                     tvAccount.text = "Гость"
 
                 }
             })
-        } else if (user.isAnonymous){
+        } else if (user.isAnonymous) {
             tvAccount.text = "Гость"
 
         } else if (!user.isAnonymous) {
@@ -233,20 +237,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         firebaseViewModel.onFavClick(ad)
     }
 
-    private fun scrollListener()= with(binding.mainContent){
-        rcView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+    private fun scrollListener() = with(binding.mainContent) {
+        rcView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recView, newState)
-                if (!recView.canScrollVertically(SCROLL_DOWN) && newState == RecyclerView.SCROLL_STATE_IDLE){
+                if (!recView.canScrollVertically(SCROLL_DOWN) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     clearUpdate = false
                     val adsList = firebaseViewModel.liveAdsData.value!!
-                    if(adsList.isNotEmpty()) {
-                        adsList[adsList.size - 1]
-                            .let { firebaseViewModel.loadAllAds(it.time) }
+                    if (adsList.isNotEmpty()) {
+                       getAdsFromCat(adsList)
                     }
                 }
             }
         })
+    }
+
+    private fun getAdsFromCat( adsList: ArrayList<Ad>) {
+        adsList[adsList.size - 1]
+            .let {
+
+                if (it.category == getString(R.string.app_def)) {
+                    firebaseViewModel.loadAllAds(it.time)
+                } else {
+                    val catTime = "${it.category}_${it.time}"
+                    firebaseViewModel.loadAllAdsFromCat(catTime)
+                }
+            }
+
     }
 
     companion object {
