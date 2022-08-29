@@ -26,6 +26,7 @@ import com.example.bulletinboard.databinding.ActivityMainBinding
 import com.example.bulletinboard.dialoghelper.DialogConst
 import com.example.bulletinboard.dialoghelper.DialogHelper
 import com.example.bulletinboard.model.Ad
+import com.example.bulletinboard.utils.FilterManager
 import com.example.bulletinboard.viewmodel.FirebaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var clearUpdate: Boolean = true
     private var currentCategory: String? = null
     private var filter: String? = "empty"
+    private var filterDb: String? = ""
 
 
 
@@ -110,7 +112,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun onActivityResultFilter() {
         filterLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if (it.resultCode == RESULT_OK){
-                filter = it.data?.getStringExtra(FilterActivity.FILTER_KEY)
+                filter = it.data?.getStringExtra(FilterActivity.FILTER_KEY)!!
+                filterDb = FilterManager.getFilter(filter!!)
             }
         }
     }
@@ -186,7 +189,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 R.id.id_home -> {
                     currentCategory = getString(R.string.app_def)
-                    firebaseViewModel.loadAllAdsFirstPage()
+                    firebaseViewModel.loadAllAdsFirstPage(filterDb!!)
                     mainContent.toolbar.title = getString(R.string.app_def)
                 }
             }

@@ -6,8 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.ImageView
-import androidx.core.net.toUri
-import androidx.exifinterface.media.ExifInterface
 import com.example.bulletinboard.adapters.ImageAdapter
 import com.example.bulletinboard.model.Ad
 import com.squareup.picasso.Picasso
@@ -15,10 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-import java.io.File
-import java.io.InputStream
-import kotlin.contracts.contract
 
 object ImageManager {
     const val  MAX_IMAGE_SIZE = 1000
@@ -77,14 +71,14 @@ object ImageManager {
     }
 
     private suspend fun getBitmapFromUris(uris: List<String?>) : List<Bitmap> = withContext(Dispatchers.IO){
-        val bimapList = ArrayList<Bitmap>()
+        val bitmapList = ArrayList<Bitmap>()
 
         for (i in uris.indices) {
-                bimapList.add(Picasso.get().load(uris[i]).get())
+                bitmapList.add(Picasso.get().load(uris[i]).get())
 
         }
 
-        return@withContext bimapList
+        return@withContext bitmapList
     }
 
     fun fillImageArray(ad: Ad, adapter: ImageAdapter){
