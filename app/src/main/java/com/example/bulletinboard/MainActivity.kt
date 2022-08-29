@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.accounthelper.AccountHelper
 import com.example.bulletinboard.act.DescriptionActivity
 import com.example.bulletinboard.act.EditAdsAct
+import com.example.bulletinboard.act.FilterActivity
 import com.example.bulletinboard.adapters.AdsRcAdapter
 import com.example.bulletinboard.databinding.ActivityMainBinding
 import com.example.bulletinboard.dialoghelper.DialogConst
@@ -46,8 +47,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val adapter = AdsRcAdapter(this)
     private val firebaseViewModel: FirebaseViewModel by viewModels()
     lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+    lateinit var filterLauncher: ActivityResultLauncher<Intent>
     private var clearUpdate: Boolean = true
     private var currentCategory: String? = null
+    private var filter: String? = "empty"
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +63,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         initViewModel()
         bottomMenuOnClick()
         scrollListener()
+        onActivityResultFilter()
 
     }
 
@@ -75,7 +81,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.id_filter) startActivity(Intent(this@MainActivity, FilterActivity::class.java))
+        if(item.itemId == R.id.id_filter) {
+            val i = Intent(this@MainActivity, FilterActivity::class.java).apply {
+                putExtra(FilterActivity.FILTER_KEY, filter)
+            }
+            filterLauncher.launch(i)
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -96,8 +107,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun onActivityResultFilter() {
+        filterLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if (it.resultCode == RESULT_OK){
+                filter = it.data?.getStringExtra(FilterActivity.FILTER_KEY)
+            }
+        }
+    }
 
-    override fun onStart() {
+
+
+        override fun onStart() {
         super.onStart()
         uiUpdate(mAuth.currentUser)
     }
