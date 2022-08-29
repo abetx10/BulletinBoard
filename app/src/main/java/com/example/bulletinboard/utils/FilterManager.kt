@@ -2,7 +2,7 @@ package com.example.bulletinboard.utils
 
 import com.example.bulletinboard.model.Ad
 import com.example.bulletinboard.model.AdFilter
-import java.lang.StringBuilder
+import kotlin.text.StringBuilder
 
 object FilterManager {
     fun createFilter(ad: Ad): AdFilter {
@@ -21,11 +21,19 @@ object FilterManager {
     }
 
     fun getFilter(filter: String): String{
-        val sBuilder = StringBuilder()
+        val sBuilderNode = StringBuilder()
+        val sBuilderFilter = StringBuilder()
+
         val tempArray = filter.split("_")
-        if(tempArray[0] != "empty") sBuilder.append("country_")
-        if(tempArray[1] != "empty") sBuilder.append("city_")
-        sBuilder.append("time")
-        return sBuilder.toString()
+        if(tempArray[0] != "empty") {
+            sBuilderNode.append("country_")
+            sBuilderFilter.append("${tempArray[0]}_")
+        }
+        if(tempArray[1] != "empty") {
+            sBuilderNode.append("city_")
+            sBuilderFilter.append(tempArray[1])
+        }
+        sBuilderNode.append("time")
+        return "$sBuilderNode|$sBuilderFilter"
     }
 }
