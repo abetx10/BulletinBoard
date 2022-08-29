@@ -41,6 +41,7 @@
     <string name="title">*Заголовок</string>
     <string name="description">Описание</string>
     <string name="publish">Опубликовать</string>
+    <string name="filter">Применить фильтр</string>
 
 
 </resources>
