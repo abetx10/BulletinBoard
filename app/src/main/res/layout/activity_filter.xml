@@ -74,6 +74,15 @@
                 android:text="@string/filter"
                 android:textColor="@color/white" />
 
+            <Button
+                android:id="@+id/btClear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:height="48dp"
+                android:backgroundTint="@color/peach"
+                android:text="@string/clear"
+                android:textColor="@color/white" />
+
 
         </LinearLayout>
     </ScrollView>

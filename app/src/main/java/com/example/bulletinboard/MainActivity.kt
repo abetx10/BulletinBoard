@@ -114,6 +114,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (it.resultCode == RESULT_OK){
                 filter = it.data?.getStringExtra(FilterActivity.FILTER_KEY)!!
                 filterDb = FilterManager.getFilter(filter!!)
+            } else if (it.resultCode == RESULT_CANCELED){
+                filterDb = ""
+                filter = "empty"
             }
         }
     }
