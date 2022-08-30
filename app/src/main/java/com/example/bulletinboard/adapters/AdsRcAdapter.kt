@@ -14,14 +14,22 @@ import com.example.bulletinboard.model.Ad
 import com.example.bulletinboard.databinding.AdListItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.AdHolder>() {
     val adArray = ArrayList<Ad>()
+    var timeFormatter: SimpleDateFormat? = null
+
+    init {
+        timeFormatter = SimpleDateFormat("dd/MM/yyyy - hh:mm", Locale.getDefault())
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdHolder {
         val binding = AdListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AdHolder(binding, act)
+        return AdHolder(binding, act, timeFormatter!!)
     }
 
     override fun onBindViewHolder(holder: AdHolder, position: Int) {
@@ -54,7 +62,7 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
 
     }
 
-    class AdHolder(val binding: AdListItemBinding, val act: MainActivity) :
+    class AdHolder(val binding: AdListItemBinding, val act: MainActivity, var formatter: SimpleDateFormat) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun setData(ad: Ad) = with(binding) {
@@ -63,12 +71,22 @@ class AdsRcAdapter(val act: MainActivity) : RecyclerView.Adapter<AdsRcAdapter.Ad
             tvTitle.text = ad.title
             tvViewCounter.text = ad.viewsCounter
             tvLikes.text = ad.favCounter
+            val publishTime = "${getTimeFromMillis(ad.time)}"
+            tvPublishTime.text = publishTime
             Picasso.get().load(ad.mainImage).into(mainImage)
 
 
             isFav(ad)
             showEditPanel(isOwner(ad))
             mainOnCLick(ad)
+
+        }
+
+        private fun getTimeFromMillis(timeMillis: String): String{
+            val c = Calendar.getInstance()
+            c.timeInMillis = timeMillis.toLong()
+            return formatter.format(c.time)
+
 
         }
 

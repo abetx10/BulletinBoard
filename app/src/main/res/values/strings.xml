@@ -43,6 +43,7 @@
     <string name="publish">Опубликовать</string>
     <string name="filter">Применить фильтр</string>
     <string name="clear">Очистить фильтр</string>
+    <string name="publish_time">Время публикации</string>
 
 
 </resources>
