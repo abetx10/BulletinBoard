@@ -1,14 +1,13 @@
 package com.example.bulletinboard.dialogs
 
 import android.app.AlertDialog
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bulletinboard.R
-import com.example.bulletinboard.act.EditAdsAct
+
 
 class RcViewDialogSpinnerAdapter(var tvSelection : TextView, var dialog :AlertDialog): RecyclerView.Adapter<RcViewDialogSpinnerAdapter.SpViewHolder>() {
     val mainList = ArrayList<String>()
