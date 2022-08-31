@@ -126,12 +126,11 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     fun onClickPublish(view: View) {
         ad = fillAd()
         if (isEditState) {
-            ad?.copy(key = ad?.key)?.let { dbManager.publishAd(it, onPublishFinish()) }
+            dbManager.publishAd(ad!!, onPublishFinish())
         } else {
 //            dbManager.publishAd(adTemp, onPublishFinish())
             uploadImages()
         }
-        finish()
     }
 
     private fun onPublishFinish(): DbManager.FinishWorkListener {
@@ -144,8 +143,9 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun fillAd() : Ad {
+        val adTemp : Ad
         binding.apply {
-            val ad = Ad(tvCountry.text.toString(),
+             adTemp = Ad(tvCountry.text.toString(),
                 tvCity.text.toString(),
                 tel.text.toString(),
                 tvCategory.text.toString(),
@@ -153,15 +153,15 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 edPrice.text.toString(),
                 edDescription.text.toString(),
                 email.text.toString(),
-                "empty",
-                "empty",
-                "empty",
-                dbManager.db.push().key,
+                ad?.mainImage ?:"empty",
+                 ad?.image2?:"empty",
+                 ad?.image3?:"empty",
+                ad?.key ?: dbManager.db.push().key,
                 "0",
                 dbManager.auth.uid,
-                System.currentTimeMillis().toString()
+                ad?.time ?: System.currentTimeMillis().toString()
             )
-            return ad
+            return adTemp
 
         }
 
